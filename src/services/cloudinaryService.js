@@ -17,14 +17,25 @@ export const cloudinaryService = {
       });
 
       xhr.addEventListener("load", () => {
-        if (xhr.status === 200) {
-          resolve(JSON.parse(xhr.responseText));
-        } else {
-          reject(new Error("Upload failed"));
+        try {
+          const response = JSON.parse(xhr.responseText);
+
+          if (xhr.status === 200) {
+            resolve(response);
+          } else {
+            console.error("Cloudinary error:", response);
+            reject(
+              new Error(response?.error?.message || "Cloudinary upload failed")
+            );
+          }
+        } catch {
+          reject(new Error("Invalid Cloudinary response"));
         }
       });
 
-      xhr.addEventListener("error", () => reject(new Error("Network error")));
+      xhr.addEventListener("error", () =>
+        reject(new Error("Network error"))
+      );
 
       xhr.open(
         "POST",

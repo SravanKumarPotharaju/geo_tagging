@@ -4,7 +4,8 @@ import { Card } from "../components/common/Card";
 import { Button } from "../components/common/Button";
 import { PlantCard } from "../components/plant/PlantCard";
 import { PlantDetailModal } from "../components/plant/PlantDetailModal";
-import { usePlants } from "../hooks/usePlants";
+import { usePlants } from "../context/PlantsContext";
+
 import { useNotification } from "../hooks/useNotification";
 import { sortPlants, exportToJSON, exportToCSV } from "../utils/helpers";
 

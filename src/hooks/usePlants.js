@@ -1,29 +1,53 @@
-import { useState, useEffect } from "react";
-import { plantStore } from "../store/plantStore";
-import { storageService } from "../services/storageService";
+// import { useState } from "react";
+// // import { extractLatLngFromImage } from "../services/plantApi";
 
-export const usePlants = () => {
-  const [state, setState] = useState(plantStore.getState());
+// export const usePlants = () => {
+//   const [plants, setPlants] = useState([]);
+//   const [selectedPlant, setSelectedPlant] = useState(null);
 
-  useEffect(() => {
-    const unsubscribe = plantStore.subscribe(setState);
+//   // ✅ WRITE YOUR FUNCTION HERE
+//   const uploadPlantImage = async (file) => {
+//     try {
+//       const data = await extractLatLngFromImage(file);
 
-    // Load plants from storage on mount
-    const savedPlants = storageService.loadPlants();
-    if (savedPlants.length > 0) {
-      plantStore.actions.setPlants(savedPlants);
-    }
+//       const newPlant = {
+//         id: Date.now(),
+//         name: file.name,
+//         latitude: data.latitude,
+//         longitude: data.longitude,
+//         imageUrl: URL.createObjectURL(file),
+//         uploadedAt: new Date().toISOString(),
+//       };
 
-    return unsubscribe;
-  }, []);
+//       setPlants((prev) => [...prev, newPlant]);
+//     } catch (error) {
+//       console.error("Failed to upload plant image:", error);
+//       alert("Image upload failed. Please try another image.");
+//     }
+//   };
 
-  useEffect(() => {
-    // Save plants to storage whenever they change
-    storageService.savePlants(state.plants);
-  }, [state.plants]);
+//   return {
+//     plants,
+//     selectedPlant,
+//     setSelectedPlant,
+//     uploadPlantImage, // 
+//   };
+// };
+// import { useState } from "react";
 
-  return {
-    ...state,
-    ...plantStore.actions,
-  };
-};
+// export const usePlants = () => {
+//   const [plants, setPlants] = useState([]);
+//   const [selectedPlant, setSelectedPlant] = useState(null);
+
+//   // ✅ Single responsibility: update state
+//   const addPlant = (plant) => {
+//     setPlants((prev) => [...prev, plant]);
+//   };
+
+//   return {
+//     plants,
+//     selectedPlant,
+//     setSelectedPlant,
+//     addPlant, // 👈 used by useUpload
+//   };
+// };

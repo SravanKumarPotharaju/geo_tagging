@@ -1,7 +1,8 @@
 import React from "react";
 import { TrendingUp, MapPin, Calendar, Award } from "lucide-react";
 import { Card } from "../components/common/Card";
-import { usePlants } from "../hooks/usePlants";
+import { usePlants } from "../context/PlantsContext";
+
 
 export const Analytics = () => {
   const { plants, stats } = usePlants();

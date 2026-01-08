@@ -4,16 +4,29 @@ import {
   MapPin,
   Package,
   TrendingUp,
-  Calendar,
   ArrowRight,
 } from "lucide-react";
 import { Card } from "../components/common/Card";
 import { Button } from "../components/common/Button";
-import { usePlants } from "../hooks/usePlants";
+import { usePlants } from "../context/PlantsContext";
+
 import { ROUTES } from "../utils/constants";
 
 export const Dashboard = ({ onNavigate }) => {
-  const { plants, stats } = usePlants();
+  const { plants } = usePlants();
+
+  
+  const totalPlants = plants.length;
+
+  const uploadedToday = plants.filter((plant) => {
+    const today = new Date().toDateString();
+    return new Date(plant.uploadedAt).toDateString() === today;
+  }).length;
+
+  const avgLatitude =
+    plants.length > 0
+      ? plants.reduce((sum, p) => sum + p.latitude, 0) / plants.length
+      : 0;
 
   const recentPlants = plants.slice(0, 5);
 
@@ -21,21 +34,21 @@ export const Dashboard = ({ onNavigate }) => {
     {
       icon: Package,
       label: "Total Plants",
-      value: stats.total,
+      value: totalPlants,
       color: "bg-blue-500",
       trend: "+12%",
     },
     {
       icon: Upload,
       label: "Uploaded Today",
-      value: stats.uploadedToday,
+      value: uploadedToday,
       color: "bg-green-500",
       trend: "+5%",
     },
     {
       icon: MapPin,
       label: "Avg Latitude",
-      value: stats.avgLatitude.toFixed(4),
+      value: avgLatitude.toFixed(4),
       color: "bg-purple-500",
       trend: "—",
     },
@@ -113,15 +126,16 @@ export const Dashboard = ({ onNavigate }) => {
                 >
                   <img
                     src={plant.imageUrl}
-                    alt={plant.imageName}
+                    alt={plant.name}
                     className="w-16 h-16 rounded-lg object-cover"
                   />
                   <div className="flex-1">
                     <h4 className="font-medium text-gray-800 truncate">
-                      {plant.imageName}
+                      {plant.name}
                     </h4>
                     <p className="text-sm text-gray-600">
-                      {plant.latitude.toFixed(4)}, {plant.longitude.toFixed(4)}
+                      {plant.latitude.toFixed(4)},{" "}
+                      {plant.longitude.toFixed(4)}
                     </p>
                   </div>
                   <div className="text-xs text-gray-500">
@@ -154,54 +168,6 @@ export const Dashboard = ({ onNavigate }) => {
               </Button>
             </div>
           )}
-        </Card>
-
-        {/* Quick Actions */}
-        <Card title="Quick Actions">
-          <div className="space-y-3">
-            <button
-              onClick={() => onNavigate(ROUTES.UPLOAD)}
-              className="w-full flex items-center gap-3 p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors text-left"
-            >
-              <div className="bg-green-600 p-2 rounded-lg">
-                <Upload className="text-white" size={20} />
-              </div>
-              <div>
-                <p className="font-medium text-gray-800">Upload Plants</p>
-                <p className="text-xs text-gray-600">
-                  Add new crops to your farm
-                </p>
-              </div>
-            </button>
-
-            <button
-              onClick={() => onNavigate(ROUTES.MAP)}
-              className="w-full flex items-center gap-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors text-left"
-            >
-              <div className="bg-blue-600 p-2 rounded-lg">
-                <MapPin className="text-white" size={20} />
-              </div>
-              <div>
-                <p className="font-medium text-gray-800">View Map</p>
-                <p className="text-xs text-gray-600">
-                  Visualize crop locations
-                </p>
-              </div>
-            </button>
-
-            <button
-              onClick={() => onNavigate(ROUTES.ANALYTICS)}
-              className="w-full flex items-center gap-3 p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors text-left"
-            >
-              <div className="bg-purple-600 p-2 rounded-lg">
-                <TrendingUp className="text-white" size={20} />
-              </div>
-              <div>
-                <p className="font-medium text-gray-800">Analytics</p>
-                <p className="text-xs text-gray-600">View insights & reports</p>
-              </div>
-            </button>
-          </div>
         </Card>
       </div>
     </div>
