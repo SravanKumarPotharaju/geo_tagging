@@ -1,18 +1,17 @@
-export const extractLatLngFromImage = async (file) => {
-  const formData = new FormData();
-  formData.append("file", file);
-
-  const response = await fetch(
-    "https://api.alumnx.com/api/hackathons/extract-latitude-longitude",
+export const fetchSavedPlants = async () => {
+  const res = await fetch(
+    "https://api.alumnx.com/api/hackathons/get-plant-location-data",
     {
-      method: "POST",
-      body: formData,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
   );
 
-  if (!response.ok) {
-    throw new Error("Latitude/Longitude extraction failed");
+  if (!res.ok) {
+    throw new Error(`API failed with status ${res.status}`);
   }
 
-  return response.json();
+  return res.json();
 };

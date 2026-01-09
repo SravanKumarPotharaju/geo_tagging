@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Upload,
   MapPin,
@@ -9,13 +9,16 @@ import {
 import { Card } from "../components/common/Card";
 import { Button } from "../components/common/Button";
 import { usePlants } from "../context/PlantsContext";
-
 import { ROUTES } from "../utils/constants";
 
 export const Dashboard = ({ onNavigate }) => {
-  const { plants } = usePlants();
+  const { plants, loading, refreshPlants } = usePlants();
 
-  
+  // Refresh plants on component mount
+  useEffect(() => {
+    refreshPlants();
+  },[]);
+
   const totalPlants = plants.length;
 
   const uploadedToday = plants.filter((plant) => {
