@@ -44,19 +44,25 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
       }}
       className="cursor-pointer"
     >
-      {/* Eye-catching Green Breathing (Expand/Contract) Effect */}
+      {/* Eye-catching Green Breathing (Expand/Contract) Effect - Multi-layered for visibility */}
       {isSelected && (
-        <div
-          className="absolute inset-0 rounded-full bg-green-500/30 animate-expand-contract"
-          style={{ width: size, height: size }}
-        />
+        <>
+          <div
+            className="absolute inset-0 rounded-full bg-green-500 animate-expand-contract"
+            style={{ width: size, height: size, filter: 'grow(10px)' }}
+          />
+          <div
+            className="absolute inset-0 rounded-full bg-green-400/50 animate-expand-contract"
+            style={{ width: size, height: size, animationDelay: '0.15s' }}
+          />
+        </>
       )}
 
       {/* Marker Icon */}
       <div
         className={`relative rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 border-2 ${isSelected
-            ? "bg-white border-green-500 scale-125 z-50 shadow-green-500/40"
-            : "bg-green-600 border-white/50 hover:bg-green-500 hover:scale-110"
+          ? "bg-white border-green-500 scale-125 z-50 shadow-green-500/40"
+          : "bg-green-600 border-white/50 hover:bg-green-500 hover:scale-110"
           }`}
         style={{ width: size, height: size }}
       >
