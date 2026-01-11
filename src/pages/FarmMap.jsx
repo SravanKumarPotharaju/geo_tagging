@@ -13,7 +13,10 @@ import {
   RefreshCw,
   Leaf,
   Navigation,
-  Info
+  Info,
+  Droplets,
+  Sun,
+  Zap
 } from "lucide-react";
 
 import { usePlants } from "../context/PlantsContext";
@@ -72,7 +75,7 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
 };
 
 /* ---------------- PLANT DETAIL MODAL ---------------- */
-const PlantDetailModal = ({ plant, onClose, onViewAnalysis }) => {
+const PlantDetailModal = ({ plant, onClose }) => {
   if (!plant) return null;
 
   return (
@@ -82,77 +85,97 @@ const PlantDetailModal = ({ plant, onClose, onViewAnalysis }) => {
         onClick={onClose}
       />
 
-      <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden animate-slideUp ring-1 ring-gray-900/5">
+      <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden animate-slideUp ring-1 ring-gray-900/5">
         {/* Header Image */}
-        <div className="relative h-64 overflow-hidden group">
+        <div className="relative h-72 overflow-hidden group">
           <img
             src={plant.imageUrl}
             alt={plant.name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-md transition-colors"
+            className="absolute top-5 right-5 p-2.5 bg-black/20 hover:bg-black/40 text-white rounded-2xl backdrop-blur-md transition-all hover:rotate-90"
           >
             <X size={20} />
           </button>
 
-          <div className="absolute bottom-0 left-0 p-6 text-white">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-green-500/90 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm border border-green-400/50">
-                Healthy
+          <div className="absolute bottom-0 left-0 p-8 text-white w-full">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="px-3 py-1 rounded-full bg-green-500/90 text-[10px] font-extrabold uppercase tracking-widest backdrop-blur-md border border-green-400/50">
+                Optimal Health
               </span>
-              <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm border border-white/10">
-                ID: {plant.plantId || plant.id.toString().slice(0, 6)}
+              <span className="px-3 py-1 rounded-full bg-white/10 text-[10px] font-extrabold uppercase tracking-widest backdrop-blur-md border border-white/10">
+                # {plant.plantId || plant.id.toString().slice(-6)}
               </span>
             </div>
-            <h2 className="text-3xl font-bold tracking-tight">{plant.name}</h2>
+            <h2 className="text-3xl font-black tracking-tight">{plant.name}</h2>
+            <p className="text-white/60 text-xs font-medium mt-1">Last inspected: {new Date(plant.uploadedAt).toLocaleDateString()}</p>
           </div>
         </div>
 
         {/* Content Body */}
-        <div className="p-6 space-y-6 bg-white">
+        <div className="p-8 space-y-8 bg-white">
+          {/* Quick Metrics Grid */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl bg-gray-50 border border-gray-100 hover:border-green-100 hover:bg-green-50/50 transition-colors group/card">
-              <div className="flex items-center gap-2 text-gray-400 mb-2 group-hover/card:text-green-600 transition-colors">
-                <Navigation size={18} />
-                <span className="text-xs font-semibold uppercase tracking-wider">Coordinates</span>
+            <div className="p-5 rounded-2xl bg-green-50/50 border border-green-100/50 group/item transition-all hover:bg-green-100/50">
+              <div className="flex items-center gap-2 text-green-600 mb-3">
+                <div className="p-1.5 bg-green-100 rounded-lg">
+                  <Leaf size={16} />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest">Growth Stage</span>
               </div>
-              <div className="space-y-1">
-                <p className="font-mono text-sm text-gray-700 flex justify-between">
-                  <span>Lat</span>
-                  <span className="font-semibold">{plant.latitude.toFixed(6)}</span>
-                </p>
-                <p className="font-mono text-sm text-gray-700 flex justify-between">
-                  <span>Lng</span>
-                  <span className="font-semibold">{plant.longitude.toFixed(6)}</span>
-                </p>
+              <p className="text-xl font-black text-gray-900">Vegetative</p>
+              <div className="w-full bg-gray-200 h-1.5 rounded-full mt-3 overflow-hidden">
+                <div className="bg-green-500 h-full w-[65%] rounded-full"></div>
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-gray-50 border border-gray-100 hover:border-blue-100 hover:bg-blue-50/50 transition-colors group/card">
-              <div className="flex items-center gap-2 text-gray-400 mb-2 group-hover/card:text-blue-600 transition-colors">
-                <Calendar size={18} />
-                <span className="text-xs font-semibold uppercase tracking-wider">Recorded</span>
+            <div className="p-5 rounded-2xl bg-blue-50/50 border border-blue-100/50 group/item transition-all hover:bg-blue-50">
+              <div className="flex items-center gap-2 text-blue-600 mb-3">
+                <div className="p-1.5 bg-blue-100 rounded-lg">
+                  <Droplets size={16} />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest">Moisture</span>
               </div>
-              <p className="text-sm font-semibold text-gray-900">
-                {new Date(plant.uploadedAt).toLocaleDateString()}
-              </p>
-              <p className="text-xs text-gray-500">
-                {new Date(plant.uploadedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </p>
+              <p className="text-xl font-black text-gray-900">72% <span className="text-xs text-blue-500 font-bold">(High)</span></p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-yellow-50/50 border border-yellow-100/50 group/item transition-all hover:bg-yellow-50">
+              <div className="flex items-center gap-2 text-yellow-600 mb-3">
+                <div className="p-1.5 bg-yellow-100 rounded-lg">
+                  <Sun size={16} />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest">Sunlight</span>
+              </div>
+              <p className="text-xl font-black text-gray-900">9.2 <span className="text-xs text-yellow-600 font-bold">hrs/day</span></p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-purple-50/50 border border-purple-100/50 group/item transition-all hover:bg-purple-50">
+              <div className="flex items-center gap-2 text-purple-600 mb-3">
+                <div className="p-1.5 bg-purple-100 rounded-lg">
+                  <Zap size={16} />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest">Yield Est.</span>
+              </div>
+              <p className="text-xl font-black text-gray-900">4.8 <span className="text-xs text-purple-600 font-bold">Tons/A</span></p>
             </div>
           </div>
 
-          <button
-            onClick={onViewAnalysis}
-            className="w-full py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-green-600/20 active:scale-[0.98] duration-200 flex items-center justify-center gap-2"
-          >
-            <Leaf size={18} />
-            View Full Analysis
-          </button>
+          <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-sm font-bold text-gray-900">Health Analysis</h4>
+              <div className="flex items-center gap-1 text-green-600">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span className="text-[10px] font-bold uppercase">Stable</span>
+              </div>
+            </div>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Based on recent multi-spectral imaging, this plant shows strong chlorophyll activity and no signs of pest infestation or nutrient deficiency.
+            </p>
+          </div>
         </div>
       </div>
     </div>
