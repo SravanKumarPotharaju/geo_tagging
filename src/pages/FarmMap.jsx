@@ -44,20 +44,24 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
       }}
       className="cursor-pointer"
     >
-      {/* Fast Pulsing/Blinking Effect - Bright Green */}
-      <div className={`absolute inset-0 rounded-full bg-green-400 opacity-0 ${isSelected ? 'opacity-60 animate-pulse-fast' : ''}`}
-        style={{ width: size * 2.5, height: size * 2.5, left: -size * 0.75, top: -size * 0.75 }}></div>
+      {/* Eye-catching Green Border Blinking/Ringing Effect */}
+      {isSelected && (
+        <div
+          className="absolute inset-0 rounded-full animate-ring-pulse"
+          style={{ width: size, height: size }}
+        />
+      )}
 
       {/* Marker Icon */}
       <div
-        className={`relative rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${isSelected
-          ? "bg-green-600 text-white scale-125 ring-4 ring-green-100"
-          : "bg-white text-green-600 hover:bg-green-50 hover:scale-110"
+        className={`relative rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 border-2 ${isSelected
+          ? "bg-white border-green-500 scale-125 z-50"
+          : "bg-green-600 border-white/50 hover:bg-green-500 hover:scale-110"
           }`}
         style={{ width: size, height: size }}
       >
         <div
-          className="rounded-full bg-current"
+          className={`${isSelected ? 'bg-green-500' : 'bg-white'} rounded-full transition-colors`}
           style={{ width: size * 0.4, height: size * 0.4 }}
         />
       </div>
@@ -229,21 +233,16 @@ export const FarmMap = ({ onNavigate }) => {
       </div>
 
       {/* MAP VISUALIZATION */}
-      <div className="relative flex-1 w-full bg-green-50/30 rounded-2xl border border-gray-200 overflow-hidden shadow-inner">
-
-        {/* Professional Grid Pattern */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
-          <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#22c55e" strokeWidth="0.5" />
-            </pattern>
-            <pattern id="grid-major" width="200" height="200" patternUnits="userSpaceOnUse">
-              <rect width="200" height="200" fill="url(#grid)" />
-              <path d="M 200 0 L 0 0 0 200" fill="none" stroke="#16a34a" strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid-major)" />
-        </svg>
+      <div
+        className="relative flex-1 w-full rounded-3xl border border-gray-200 overflow-hidden shadow-2xl bg-gray-900"
+        style={{
+          backgroundImage: 'url(/assets/farm-map-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
+        {/* Subtle Overlay to make markers pop */}
+        <div className="absolute inset-0 bg-black/10 pointer-events-none" />
 
         {loading && (
           <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
