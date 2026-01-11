@@ -46,25 +46,17 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
       }}
       className="cursor-pointer flex items-center justify-center"
     >
-      {/* Extreme Visibility LED Blink Effect - High Contrast Red */}
-      {isSelected && (
-        <>
-          <div
-            className="absolute rounded-full bg-red-500 animate-led-blink shadow-[0_0_40px_rgba(239,68,68,0.9)]"
-            style={{ width: '100%', height: '100%', zIndex: -1 }}
-          />
-          <div
-            className="absolute rounded-full bg-amber-500 animate-led-blink shadow-[0_0_30px_rgba(245,158,11,0.5)]"
-            style={{ width: '100%', height: '100%', zIndex: -2, animationDelay: '0.3s' }}
-          />
-        </>
-      )}
+      {/* Continuous LED Blink Effect for all plants */}
+      <div
+        className="absolute rounded-full bg-red-500 animate-led-blink shadow-[0_0_10px_rgba(239,68,68,0.7)]"
+        style={{ width: '100%', height: '100%', zIndex: -1 }}
+      />
 
       {/* Marker Icon */}
       <div
         className={`relative rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${isSelected
-          ? "bg-green-600 text-white scale-110 ring-2 ring-white"
-          : "bg-white text-green-600 border border-green-100 hover:bg-green-50 hover:scale-110"
+            ? "bg-green-600 text-white scale-110 ring-2 ring-white shadow-[0_0_20px_rgba(34,197,-94,0.6)]"
+            : "bg-white text-green-600 border border-green-100 hover:bg-green-50 hover:scale-110"
           }`}
         style={{ width: size, height: size }}
       >
