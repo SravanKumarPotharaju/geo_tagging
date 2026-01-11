@@ -41,10 +41,10 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
       }}
       className="cursor-pointer group"
     >
-      {/* Ripple/Pulse Effect for Selected/Active */}
+      {/* Pulsing/Blinking Effect */}
       {isSelected && (
-        <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"
-          style={{ padding: size }}></span>
+        <div className={`absolute inset-0 rounded-full bg-green-500/40 animate-pulse`}
+          style={{ width: size * 2, height: size * 2, left: -size / 2, top: -size / 2 }}></div>
       )}
 
       {/* Marker Icon */}
@@ -61,15 +61,13 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
         />
       </div>
 
-      {/* Hover Tooltip (Enhanced) */}
-      <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 pointer-events-none transition-all duration-200 ${scale > 1.5 || isSelected ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+      {/* Hover Tooltip (Removed Lat/Lng as requested) */}
+      <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 pointer-events-none transition-all duration-200 ${isSelected ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0"
         }`}>
         <div className="bg-gray-900/90 backdrop-blur-md text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow-xl whitespace-nowrap border border-white/10 flex items-center gap-2">
           <Leaf size={10} className="text-green-400" />
           {plant.name}
         </div>
-        {/* Arrow */}
-        <div className="w-2 h-2 bg-gray-900/90 rotate-45 absolute -bottom-1 left-1/2 -translate-x-1/2"></div>
       </div>
     </div>
   );
@@ -213,15 +211,21 @@ export const FarmMap = () => {
       </div>
 
       {/* MAP VISUALIZATION */}
-      <div className="relative flex-1 w-full bg-gray-100 rounded-2xl border border-gray-200 overflow-hidden shadow-inner group">
+      <div className="relative flex-1 w-full bg-green-50/30 rounded-2xl border border-gray-200 overflow-hidden shadow-inner group">
 
-        {/* Background Grid Pattern */}
-        <div className="absolute inset-0 z-0 opacity-40 pointer-events-none"
-          style={{
-            backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)',
-            backgroundSize: '24px 24px'
-          }}>
-        </div>
+        {/* Professional Grid Pattern */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#22c55e" strokeWidth="0.5" />
+            </pattern>
+            <pattern id="grid-major" width="200" height="200" patternUnits="userSpaceOnUse">
+              <rect width="200" height="200" fill="url(#grid)" />
+              <path d="M 200 0 L 0 0 0 200" fill="none" stroke="#16a34a" strokeWidth="1" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid-major)" />
+        </svg>
 
         {loading && (
           <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
