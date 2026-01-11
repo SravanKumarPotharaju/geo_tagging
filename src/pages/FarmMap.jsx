@@ -38,24 +38,26 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
         position: "absolute",
         left: `${position.x}%`,
         top: `${position.y}%`,
+        width: size,
+        height: size,
         transform: "translate(-50%, -50%)",
         zIndex: isSelected ? 50 : 10,
         transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
       }}
-      className="cursor-pointer"
+      className="cursor-pointer flex items-center justify-center"
     >
-      {/* High-Visibility Amber LED Blinking Effect */}
+      {/* High-Visibility LED Blink Effect (Expanded for extreme visibility) */}
       {isSelected && (
         <div
-          className="absolute inset-0 rounded-full bg-amber-400 animate-led-blink shadow-[0_0_20px_rgba(251,191,36,0.9)]"
-          style={{ width: size, height: size }}
+          className="absolute rounded-full bg-yellow-400 animate-led-blink shadow-[0_0_25px_rgba(253,224,71,0.9)]"
+          style={{ width: '100%', height: '100%', zIndex: -1 }}
         />
       )}
 
-      {/* Marker Icon - Restored to Initial Solid Green Style */}
+      {/* Marker Icon */}
       <div
         className={`relative rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${isSelected
-          ? "bg-green-600 text-white scale-125 ring-4 ring-green-100/50"
+          ? "bg-green-600 text-white scale-110 ring-2 ring-white"
           : "bg-white text-green-600 border border-green-100 hover:bg-green-50 hover:scale-110"
           }`}
         style={{ width: size, height: size }}
