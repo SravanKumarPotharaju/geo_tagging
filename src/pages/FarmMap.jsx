@@ -44,10 +44,10 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
       }}
       className="cursor-pointer"
     >
-      {/* Intense Green LED Blinking Effect */}
+      {/* High-Visibility Amber LED Blinking Effect */}
       {isSelected && (
         <div
-          className="absolute inset-0 rounded-full bg-green-500 animate-led-blink shadow-[0_0_15px_rgba(34,197,94,0.8)]"
+          className="absolute inset-0 rounded-full bg-amber-400 animate-led-blink shadow-[0_0_20px_rgba(251,191,36,0.9)]"
           style={{ width: size, height: size }}
         />
       )}
