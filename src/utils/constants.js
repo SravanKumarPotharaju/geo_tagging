@@ -5,6 +5,7 @@ export const ROUTES = {
   INVENTORY: "/inventory",
   ANALYTICS: "/analytics",
   PROFILE: "/profile",
+  LEAFLET_MAP: "/leafmap",
 };
 
 export const STORAGE_KEYS = {

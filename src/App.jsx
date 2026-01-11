@@ -3,6 +3,7 @@ import { Layout } from "./components/layout/Layout";
 import { Dashboard } from "./pages/Dashboard";
 import { Upload } from "./pages/Upload";
 import { FarmMap } from "./pages/FarmMap";
+import { LeafletMap } from "./pages/LeafletMap";
 import { PlantInventory } from "./pages/PlantInventory";
 import { Analytics } from "./pages/Analytics";
 import { Profile } from "./pages/Profile";
@@ -23,6 +24,8 @@ function App() {
         return <PlantInventory />;
       case ROUTES.ANALYTICS:
         return <Analytics />;
+      case ROUTES.LEAFLET_MAP:
+        return <LeafletMap />;
       case ROUTES.PROFILE:
         return <Profile />;
       default:

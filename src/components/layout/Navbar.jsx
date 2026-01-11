@@ -1,5 +1,4 @@
-import React from "react";
-import { Bell, Search, User, Map, LayoutDashboard, Package, BarChart3, UploadCloud } from "lucide-react";
+import { Bell, Search, User, Map, LayoutDashboard, Package, BarChart3, UploadCloud, Globe } from "lucide-react";
 import { ROUTES } from "../../utils/constants";
 
 export const Navbar = ({ currentPage, onNavigate }) => {
@@ -8,6 +7,7 @@ export const Navbar = ({ currentPage, onNavigate }) => {
     { label: "Farm Map", route: ROUTES.MAP, icon: Map },
     { label: "Inventory", route: ROUTES.INVENTORY, icon: Package },
     { label: "Analytics", route: ROUTES.ANALYTICS, icon: BarChart3 },
+    { label: "Leaflet Map", route: ROUTES.LEAFLET_MAP, icon: Globe },
     { label: "Upload", route: ROUTES.UPLOAD, icon: UploadCloud },
   ];
 
