@@ -39,17 +39,17 @@
   0%,
   100% {
     transform: scale(1);
-    opacity: 0.8;
+    opacity: 0.6;
   }
 
   50% {
-    transform: scale(3.5);
-    opacity: 0.1;
+    transform: scale(2.5);
+    opacity: 0;
   }
 }
 
 .animate-expand-contract {
-  animation: expand-contract 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: expand-contract 2s ease-out infinite;
 }
 
 /* Custom Scrollbar */

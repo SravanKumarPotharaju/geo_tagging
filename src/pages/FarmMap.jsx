@@ -44,30 +44,24 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
       }}
       className="cursor-pointer"
     >
-      {/* Eye-catching Green Breathing (Expand/Contract) Effect - Multi-layered for visibility */}
+      {/* Refined Green Breathing Effect */}
       {isSelected && (
-        <>
-          <div
-            className="absolute inset-0 rounded-full bg-green-500 animate-expand-contract"
-            style={{ width: size, height: size, filter: 'grow(10px)' }}
-          />
-          <div
-            className="absolute inset-0 rounded-full bg-green-400/50 animate-expand-contract"
-            style={{ width: size, height: size, animationDelay: '0.15s' }}
-          />
-        </>
+        <div
+          className="absolute inset-0 rounded-full bg-green-500 animate-expand-contract"
+          style={{ width: size, height: size }}
+        />
       )}
 
-      {/* Marker Icon */}
+      {/* Marker Icon - Restored to Initial Solid Green Style */}
       <div
-        className={`relative rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 border-2 ${isSelected
-          ? "bg-white border-green-500 scale-125 z-50 shadow-green-500/40"
-          : "bg-green-600 border-white/50 hover:bg-green-500 hover:scale-110"
+        className={`relative rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${isSelected
+          ? "bg-green-600 text-white scale-125 ring-4 ring-green-100/50"
+          : "bg-white text-green-600 border border-green-100 hover:bg-green-50 hover:scale-110"
           }`}
         style={{ width: size, height: size }}
       >
         <div
-          className={`${isSelected ? 'bg-green-500 animate-pulse' : 'bg-white'} rounded-full transition-colors`}
+          className={`${isSelected ? 'bg-white' : 'bg-green-500'} rounded-full transition-colors`}
           style={{ width: size * 0.4, height: size * 0.4 }}
         />
       </div>
