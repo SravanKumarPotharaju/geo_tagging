@@ -42,10 +42,10 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
         zIndex: isSelected ? 50 : 10,
         transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
       }}
-      className="cursor-pointer group"
+      className="cursor-pointer"
     >
-      {/* Pulsing/Blinking Effect - Bright Green */}
-      <div className={`absolute inset-0 rounded-full bg-green-400 opacity-0 group-hover:opacity-40 ${isSelected ? 'opacity-60 animate-pulse' : ''}`}
+      {/* Fast Pulsing/Blinking Effect - Bright Green */}
+      <div className={`absolute inset-0 rounded-full bg-green-400 opacity-0 ${isSelected ? 'opacity-60 animate-pulse-fast' : ''}`}
         style={{ width: size * 2.5, height: size * 2.5, left: -size * 0.75, top: -size * 0.75 }}></div>
 
       {/* Marker Icon */}
@@ -60,15 +60,6 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
           className="rounded-full bg-current"
           style={{ width: size * 0.4, height: size * 0.4 }}
         />
-      </div>
-
-      {/* Hover Tooltip - Simplified to only show when hovered or selected */}
-      <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 pointer-events-none transition-all duration-200 z-50 ${isSelected ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0"
-        }`}>
-        <div className="bg-gray-900/95 backdrop-blur-md text-white px-3 py-2 rounded-xl text-[10px] font-bold shadow-2xl whitespace-nowrap border border-white/10 flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-          {plant.name || plant.imageName}
-        </div>
       </div>
     </div>
   );
@@ -238,7 +229,7 @@ export const FarmMap = ({ onNavigate }) => {
       </div>
 
       {/* MAP VISUALIZATION */}
-      <div className="relative flex-1 w-full bg-green-50/30 rounded-2xl border border-gray-200 overflow-hidden shadow-inner group">
+      <div className="relative flex-1 w-full bg-green-50/30 rounded-2xl border border-gray-200 overflow-hidden shadow-inner">
 
         {/* Professional Grid Pattern */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
