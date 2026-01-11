@@ -44,10 +44,10 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
       }}
       className="cursor-pointer"
     >
-      {/* Eye-catching Green Border Blinking/Ringing Effect */}
+      {/* Eye-catching Green Breathing (Expand/Contract) Effect */}
       {isSelected && (
         <div
-          className="absolute inset-0 rounded-full animate-ring-pulse"
+          className="absolute inset-0 rounded-full bg-green-500/30 animate-expand-contract"
           style={{ width: size, height: size }}
         />
       )}
@@ -55,13 +55,13 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
       {/* Marker Icon */}
       <div
         className={`relative rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 border-2 ${isSelected
-          ? "bg-white border-green-500 scale-125 z-50"
-          : "bg-green-600 border-white/50 hover:bg-green-500 hover:scale-110"
+            ? "bg-white border-green-500 scale-125 z-50 shadow-green-500/40"
+            : "bg-green-600 border-white/50 hover:bg-green-500 hover:scale-110"
           }`}
         style={{ width: size, height: size }}
       >
         <div
-          className={`${isSelected ? 'bg-green-500' : 'bg-white'} rounded-full transition-colors`}
+          className={`${isSelected ? 'bg-green-500 animate-pulse' : 'bg-white'} rounded-full transition-colors`}
           style={{ width: size * 0.4, height: size * 0.4 }}
         />
       </div>
@@ -233,16 +233,34 @@ export const FarmMap = ({ onNavigate }) => {
       </div>
 
       {/* MAP VISUALIZATION */}
-      <div
-        className="relative flex-1 w-full rounded-3xl border border-gray-200 overflow-hidden shadow-2xl bg-gray-900"
-        style={{
-          backgroundImage: 'url(/assets/farm-map-bg.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
-        {/* Subtle Overlay to make markers pop */}
-        <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+      <div className="relative flex-1 w-full bg-[#f8fafc] rounded-3xl border border-gray-100 overflow-hidden shadow-2xl">
+
+        {/* Fancy Grid Layout */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" strokeWidth="0.5" />
+              </pattern>
+              <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+                <rect width="100" height="100" fill="url(#smallGrid)" />
+                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#cbd5e1" strokeWidth="1" />
+              </pattern>
+              <radialGradient id="fade" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" stopColor="white" stopOpacity="0" />
+                <stop offset="100%" stopColor="white" stopOpacity="1" />
+              </radialGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+            {/* Dots at intersections */}
+            <pattern id="dots" width="100" height="100" patternUnits="userSpaceOnUse">
+              <circle cx="0" cy="0" r="1.5" fill="#94a3b8" />
+              <circle cx="100" cy="100" r="1.5" fill="#94a3b8" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#dots)" />
+          </svg>
+          <div className="absolute inset-0 bg-gradient-to-tr from-green-50/20 via-transparent to-blue-50/20" />
+        </div>
 
         {loading && (
           <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
