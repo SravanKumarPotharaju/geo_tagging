@@ -5,6 +5,7 @@ import { Upload } from "./pages/Upload";
 import { FarmMap } from "./pages/FarmMap";
 import { PlantInventory } from "./pages/PlantInventory";
 import { Analytics } from "./pages/Analytics";
+import { Profile } from "./pages/Profile";
 import { ROUTES } from "./utils/constants";
 
 function App() {
@@ -17,11 +18,13 @@ function App() {
       case ROUTES.UPLOAD:
         return <Upload />;
       case ROUTES.MAP:
-        return <FarmMap />;
+        return <FarmMap onNavigate={setCurrentPage} />;
       case ROUTES.INVENTORY:
         return <PlantInventory />;
       case ROUTES.ANALYTICS:
         return <Analytics />;
+      case ROUTES.PROFILE:
+        return <Profile />;
       default:
         return <Dashboard onNavigate={setCurrentPage} />;
     }

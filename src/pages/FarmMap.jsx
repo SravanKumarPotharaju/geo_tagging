@@ -20,10 +20,10 @@ import { usePlants } from "../context/PlantsContext";
 import { calculateBounds, latLngToGridPosition } from "../utils/mapUtils";
 
 /* ---------------- PLANT MARKER ---------------- */
+/* ---------------- PLANT MARKER ---------------- */
 const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
   // Dynamic sizing based on zoom level
   const size = scale > 3 ? 24 : scale > 2 ? 18 : 14;
-  const isVisible = scale > 0.6; // Hide markers if zoomed out too far? No, better keep them.
 
   return (
     <div
@@ -41,17 +41,15 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
       }}
       className="cursor-pointer group"
     >
-      {/* Pulsing/Blinking Effect */}
-      {isSelected && (
-        <div className={`absolute inset-0 rounded-full bg-green-500/40 animate-pulse`}
-          style={{ width: size * 2, height: size * 2, left: -size / 2, top: -size / 2 }}></div>
-      )}
+      {/* Pulsing/Blinking Effect - Bright Green */}
+      <div className={`absolute inset-0 rounded-full bg-green-400 opacity-0 group-hover:opacity-40 ${isSelected ? 'opacity-60 animate-pulse' : ''}`}
+        style={{ width: size * 2.5, height: size * 2.5, left: -size * 0.75, top: -size * 0.75 }}></div>
 
       {/* Marker Icon */}
       <div
         className={`relative rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${isSelected
-            ? "bg-green-600 text-white scale-125 ring-4 ring-green-100"
-            : "bg-white text-green-600 hover:bg-green-50 hover:scale-110"
+          ? "bg-green-600 text-white scale-125 ring-4 ring-green-100"
+          : "bg-white text-green-600 hover:bg-green-50 hover:scale-110"
           }`}
         style={{ width: size, height: size }}
       >
@@ -61,12 +59,12 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
         />
       </div>
 
-      {/* Hover Tooltip (Removed Lat/Lng as requested) */}
-      <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 pointer-events-none transition-all duration-200 ${isSelected ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0"
+      {/* Hover Tooltip - Simplified to only show when hovered or selected */}
+      <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 pointer-events-none transition-all duration-200 z-50 ${isSelected ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0"
         }`}>
-        <div className="bg-gray-900/90 backdrop-blur-md text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow-xl whitespace-nowrap border border-white/10 flex items-center gap-2">
-          <Leaf size={10} className="text-green-400" />
-          {plant.name}
+        <div className="bg-gray-900/95 backdrop-blur-md text-white px-3 py-2 rounded-xl text-[10px] font-bold shadow-2xl whitespace-nowrap border border-white/10 flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+          {plant.name || plant.imageName}
         </div>
       </div>
     </div>
@@ -74,7 +72,7 @@ const PlantMarker = ({ plant, position, onClick, isSelected, scale }) => {
 };
 
 /* ---------------- PLANT DETAIL MODAL ---------------- */
-const PlantDetailModal = ({ plant, onClose }) => {
+const PlantDetailModal = ({ plant, onClose, onViewAnalysis }) => {
   if (!plant) return null;
 
   return (
@@ -148,7 +146,11 @@ const PlantDetailModal = ({ plant, onClose }) => {
             </div>
           </div>
 
-          <button className="w-full py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-xl font-medium transition-colors shadow-lg shadow-gray-900/20 active:scale-[0.98] duration-200">
+          <button
+            onClick={onViewAnalysis}
+            className="w-full py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-green-600/20 active:scale-[0.98] duration-200 flex items-center justify-center gap-2"
+          >
+            <Leaf size={18} />
             View Full Analysis
           </button>
         </div>
@@ -158,7 +160,9 @@ const PlantDetailModal = ({ plant, onClose }) => {
 };
 
 /* ---------------- MAIN FARM MAP ---------------- */
-export const FarmMap = () => {
+import { ROUTES } from "../utils/constants";
+
+export const FarmMap = ({ onNavigate }) => {
   const { plants, selectedPlant, setSelectedPlant, loading, error, refreshPlants } = usePlants();
   const [currentScale, setCurrentScale] = useState(1);
 
@@ -307,6 +311,7 @@ export const FarmMap = () => {
         <PlantDetailModal
           plant={selectedPlant}
           onClose={() => setSelectedPlant(null)}
+          onViewAnalysis={() => onNavigate(ROUTES.ANALYTICS)}
         />
       )}
     </div>

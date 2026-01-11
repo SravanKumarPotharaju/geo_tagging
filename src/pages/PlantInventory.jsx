@@ -22,9 +22,13 @@ export const PlantInventory = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState("grid");
 
-  const filteredPlants = plants.filter((plant) =>
-    plant.imageName.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredPlants = plants.filter((plant) => {
+    const searchStr = searchQuery.toLowerCase();
+    const nameMatch = plant.name?.toLowerCase().includes(searchStr);
+    const imageNameMatch = plant.imageName?.toLowerCase().includes(searchStr);
+    const idMatch = plant.id?.toString().includes(searchStr);
+    return nameMatch || imageNameMatch || idMatch;
+  });
 
   const sortedPlants = sortPlants(filteredPlants, sortBy);
 

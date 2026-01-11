@@ -36,8 +36,8 @@ export const Navbar = ({ currentPage, onNavigate }) => {
                   key={item.route}
                   onClick={() => onNavigate(item.route)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${isActive
-                      ? "bg-green-50 text-green-700 shadow-sm"
-                      : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                    ? "bg-green-50 text-green-700 shadow-sm"
+                    : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
                     }`}
                 >
                   <Icon size={18} className={isActive ? "text-green-600" : ""} />
@@ -63,8 +63,11 @@ export const Navbar = ({ currentPage, onNavigate }) => {
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
           </button>
           <div className="h-8 w-[1px] bg-gray-200 hidden sm:block"></div>
-          <div className="flex items-center gap-3 pl-2 cursor-pointer hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-green-500/30">
+          <div
+            onClick={() => onNavigate(ROUTES.PROFILE)}
+            className="flex items-center gap-3 pl-2 cursor-pointer hover:opacity-80 transition-opacity"
+          >
+            <div className={`w-10 h-10 ${currentPage === ROUTES.PROFILE ? 'ring-2 ring-green-500 ring-offset-2' : ''} bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-green-500/30`}>
               <User size={20} />
             </div>
           </div>
@@ -80,8 +83,8 @@ export const Navbar = ({ currentPage, onNavigate }) => {
               key={item.route}
               onClick={() => onNavigate(item.route)}
               className={`flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all ${isActive
-                  ? "bg-green-600 text-white shadow-md shadow-green-600/30"
-                  : "text-gray-500 hover:text-gray-800"
+                ? "bg-green-600 text-white shadow-md shadow-green-600/30"
+                : "text-gray-500 hover:text-gray-800"
                 }`}
             >
               {item.label}

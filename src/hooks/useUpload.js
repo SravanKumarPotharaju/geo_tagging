@@ -20,13 +20,12 @@ export const useUpload = () => {
         );
 
         if (isDuplicateByName) {
-          showError(`❌ "${file.name}" already uploaded (duplicate filename)`);
+          showError(`duplicate image: ${file.name}`);
           continue;
         }
 
         console.log("📤 Uploading to Cloudinary:", file.name);
         const cloudinaryResult = await cloudinaryService.uploadImage(file);
-        console.log("✅ Cloudinary upload:", cloudinaryResult.secure_url);
 
         // ✅ Check for duplicate by Cloudinary URL
         const isDuplicateByUrl = plants.some(
@@ -34,7 +33,7 @@ export const useUpload = () => {
         );
 
         if (isDuplicateByUrl) {
-          showError(`❌ "${file.name}" already exists (same image)`);
+          showError(`duplicate image: ${file.name}`);
           continue;
         }
 
@@ -44,28 +43,24 @@ export const useUpload = () => {
           cloudinaryResult.secure_url
         );
 
-        console.log("🗺️ Raw location API response:", locationResult);
-
         if (!locationResult || !locationResult.data) {
-          console.error("❌ Location extraction failed");
           throw new Error("No GPS data found in image");
         }
 
         const { latitude, longitude } = locationResult.data;
 
-        // ✅ Check for duplicate by coordinates (same location)
+        // ✅ Check for duplicate by coordinates
         const isDuplicateByLocation = plants.some(
-          (plant) =>
-            Math.abs(plant.latitude - latitude) < 0.00001 &&
-            Math.abs(plant.longitude - longitude) < 0.00001
+          (p) =>
+            Math.abs(p.latitude - latitude) < 0.000001 &&
+            Math.abs(p.longitude - longitude) < 0.000001
         );
 
         if (isDuplicateByLocation) {
-          showError(`❌ Plant at this location already exists`);
+          showError(`duplicate image: ${file.name} (location exists)`);
           continue;
         }
 
-        console.log("💾 Saving plant data to backend...");
         const saveResult = await apiService.savePlantData({
           imageName: file.name,
           imageUrl: cloudinaryResult.secure_url,
@@ -73,7 +68,7 @@ export const useUpload = () => {
           longitude,
         });
 
-        const plant = {
+        const plantData = {
           id: saveResult.data?._id || Date.now() + Math.random(),
           name: file.name,
           imageName: file.name,
@@ -83,13 +78,10 @@ export const useUpload = () => {
           uploadedAt: saveResult.data?.uploadedAt || new Date().toISOString(),
         };
 
-        console.log("🌱 Adding plant to context:", plant);
-        addPlant(plant);
-
-        showSuccess(`✅ ${file.name} uploaded successfully`);
+        addPlant(plantData);
+        showSuccess(`Uploaded successfully: ${file.name}`);
       } catch (err) {
-        console.error(` Upload failed for ${file.name}:`, err);
-        showError(` Failed: ${file.name} - ${err.message}`);
+        showError(`Upload failed: ${file.name} - ${err.message}`);
       }
     }
 

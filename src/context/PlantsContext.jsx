@@ -35,7 +35,7 @@ export const PlantsProvider = ({ children }) => {
 
       // Then fetch from API to get latest data
       const response = await apiService.getPlantLocationData();
-      
+
       if (response && response.data && Array.isArray(response.data)) {
         const formattedPlants = response.data.map((plant) => ({
           id: plant._id || plant.id || Date.now() + Math.random(),
@@ -54,7 +54,7 @@ export const PlantsProvider = ({ children }) => {
     } catch (err) {
       console.error("❌ Error loading plants:", err);
       setError(err.message);
-      
+
       // Fallback to cached data if API fails
       const cachedPlants = storageService.loadPlants();
       if (cachedPlants.length > 0) {
@@ -67,20 +67,28 @@ export const PlantsProvider = ({ children }) => {
   };
 
   const addPlant = (plant) => {
-    console.log("🧠 Context received plant:", plant);
+    console.log("🌱 Adding plant to system:", plant);
+    const normalizedPlant = {
+      ...plant,
+      name: plant.name || plant.imageName || "Plant Record",
+      imageName: plant.imageName || plant.name || "Plant Record"
+    };
+
     setPlants((prev) => {
-      // Check for duplicates by imageUrl or name
+      // Check for duplicates by name or coordinates
       const isDuplicate = prev.some(
-        (p) => p.imageUrl === plant.imageUrl || 
-               (p.name === plant.name && p.latitude === plant.latitude && p.longitude === plant.longitude)
+        (p) =>
+          p.imageName === normalizedPlant.imageName ||
+          (Math.abs(p.latitude - normalizedPlant.latitude) < 0.000001 &&
+            Math.abs(p.longitude - normalizedPlant.longitude) < 0.000001)
       );
-      
+
       if (isDuplicate) {
-        console.log("⚠️ Duplicate plant detected, skipping");
+        console.log("⚠️ Duplicate detected in context, skipping");
         return prev;
       }
-      
-      return [...prev, plant];
+
+      return [normalizedPlant, ...prev];
     });
   };
 

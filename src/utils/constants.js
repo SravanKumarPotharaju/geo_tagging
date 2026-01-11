@@ -4,6 +4,7 @@ export const ROUTES = {
   MAP: "/map",
   INVENTORY: "/inventory",
   ANALYTICS: "/analytics",
+  PROFILE: "/profile",
 };
 
 export const STORAGE_KEYS = {
